@@ -1,0 +1,43 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Profile {
+  id                 String   @id @default("default")
+  name               String   @default("Utilisateur")
+  email              String   @default("")
+  targetEmail        String   @default("")
+  searchKeywords     String   @default("Développeur React, Développeur Node")
+  location           String   @default("Télétravail, Paris")
+  resumeText         String   @default("")
+  resumeFileName     String   @default("")
+  resumeFileBase64   String   @default("") // Store main CV file bytes in base64
+  gmailUser          String   @default("")
+  gmailAppPassword   String   @default("")
+  geminiApiKey       String   @default("")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Job {
+  id                      String   @id @default(uuid())
+  title                   String
+  company                 String
+  description             String
+  url                     String   @unique
+  source                  String   // Welcome to the Jungle, APEC, Indeed, HelloWork, etc.
+  score                   Int      // 1 to 10
+  compatibilityReason     String
+  suggestedResumeChanges   String
+  customCoverLetter       String
+  customResumeFileName    String   @default("") // Job-specific customized CV file name
+  customResumeFileBase64  String   @default("") // Job-specific customized CV file bytes in base64
+  status                  String   // NEW, INTERESTED, APPLIED, REJECTED
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+}
